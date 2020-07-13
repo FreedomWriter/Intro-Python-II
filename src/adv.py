@@ -1,4 +1,6 @@
 from room import Room
+from player import Player
+import textwrap
 
 # Declare all the rooms
 
@@ -32,6 +34,13 @@ room['overlook'].s_to = room['foyer']
 room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
+# print(room['outside'].n_to)
+# print(room['foyer'].n_to)
+# print(room['foyer'].e_to)
+# print(room['foyer'].s_to)
+# print(room['outside'].s_to)
+
+
 
 #
 # Main
@@ -39,13 +48,73 @@ room['treasure'].s_to = room['narrow']
 
 # Make a new player object that is currently in the 'outside' room.
 
+player1 = Player('PlayersGonnaPlay', 'outside')
+print(player1.current_room)
+
 # Write a loop that:
 #
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
 #
+
+while True:
+    try:
+        print(textwrap.fill(f'{player1.name} is currently {player1.current_room}. {room[player1.current_room].description}'))
+        first_move = input('~~~~> Will you go north, traveler? (Enter n to accept adventure) ')
+        if first_move == 'n':
+           print('So you choose Adventure.')
+           new_room = room[player1.current_room].n_to
+           player1.current_room = new_room.name
+           print(textwrap.fill(f'{player1.name} is currently {player1.current_room}. {new_room.description}'))
+           break
+        elif first_move == 'q':
+            print('Until our stars align again, I bid you farewell traveler')
+            break
+        else:
+            print('You must not deny destiny, the only path forward is North.')
+            continue
+    except:
+        pass
+
+
+
+    # # print(f'Ah, so you choose {next_move}')
+while True:
+    try:
+        next_move = input('~~~~> Where next, traveler? ')
+        if next_move == 's':
+            foyer_move_s = room[player1.current_room.lower()].s_to
+            player1.current_room = foyer_move_s.name
+            print(textwrap.fill(f'{player1.name} is currently {player1.current_room}. {foyer_move_s.description}'))
+            break
+        elif next_move == 'e':
+            foyer_move_e = room[player1.current_room.lower()].e_to
+            player1.current_room = foyer_move_e.name
+            print(textwrap.fill(f'{player1.name} is currently {player1.current_room}. {foyer_move_e.description}'))
+            break
+        elif next_move == 'n':
+            foyer_move_n = room[player1.current_room.lower()].n_to
+            player1.current_room = foyer_move_n.name
+            print(textwrap.fill(f'{player1.name} is currently {player1.current_room}. {foyer_move_n.description}'))
+            break
+        elif next_move == 'w':
+            print('To the west lies, that which you have not prepared for.')
+            continue
+        elif next_move == 'q':
+            print('Until our stars align again, I bid you farewell traveler')
+            break
+        else:
+            print(f'Perhaps, you are more than we take you for. For now though you may only move in the four cardinal directions: n for North, s for South, e for East, w for West')
+            continue
+    except:
+        pass
+
+
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+#helper function to handle moves
+# choice list 
