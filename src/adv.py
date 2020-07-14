@@ -158,8 +158,9 @@
 #         pass
 
 
-from room import Room
+from room import Room, List
 from player import Player
+from item import Item
 import textwrap
 
 # Declare all the rooms
@@ -185,6 +186,15 @@ earlier adventurers. The only exit is to the south."""),
 
 
 # Link rooms together
+room['outside'].items =[Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('another', 'placeholder for when I feel more creative')]
+# room['foyer'].items = [Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('another', 'placeholder for when I feel more creative')]
+# room['foyer'].items = [Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('another', 'placeholder for when I feel more creative')]
+# room['foyer'].items = [Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('another', 'placeholder for when I feel more creative')]
+# room['overlook'].items =[Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('another', 'placeholder for when I feel more creative')]
+# room['narrow'].items =[Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('another', 'placeholder for when I feel more creative')]
+# room['narrow'].items = room['treasure']
+# room['treasure'].items = room['narrow']
+
 
 room['outside'].n_to = room['foyer']
 room['foyer'].s_to = room['outside']
@@ -194,6 +204,14 @@ room['overlook'].s_to = room['foyer']
 room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
+
+# outside_list = List(room['outside'].items, room['outside'].name)
+
+# print(room['outside'].items)
+# print(outside_list)
+
+# for item in room['outside'].items:
+#     print(f'\nItem: {item.name.capitalize()}, Item Description: {item.description}\n')
 
 
 
@@ -214,6 +232,8 @@ player1 = Player('Players_Gonna_Play', 'outside')
 
 def print_location(player, player_cur_room, room_desc):
     print(textwrap.fill(f'\n{player} is currently {player_cur_room}. {room_desc}'))
+    # for item in room['outside'].items:
+    #     print(f'\nItem: {item.name.capitalize()}, Item Description: {item.description}\n')
 
 def print_quit():
     print('\nUntil our stars align again, I bid you farewell traveler')
