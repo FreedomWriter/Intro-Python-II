@@ -66,12 +66,74 @@ player1 = Player('Players_Gonna_Play', 'outside')
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
 #
+def get_and_drop(item_list):
+    split_items= []
+    get_items = input('Will you get or drop an item? ')
+    split_items = get_items.split(' ')
+    print(split_items)
+
+    if get_items == 'no':
+        return print('Carry on')
+
+    if split_items[0] == 'get' or split_items[0] == 'take':
+        item_to_get = split_items[1]
+        for item in item_list:
+            print(f'ITEM.NAME: {item.name.lower()}')
+            print(f'ITEM_TO_GET: {item_to_get.lower()}')
+            if item_to_get.lower() == item.name.lower():
+                player1.items.append(item)
+                split_items = []
+                return print(f"{item.name.capitalize()} has been added {len(player1.items)} total!!")
+            
+        print('You cannot get that which the room does not contain.')
+
+    elif 'drop' in split_items:
+        print('DROPPING')
+        item_to_drop = split_items[1]
+        for item in player1.items:
+            # print(f'ITEM.NAME: {item.name}')
+            # print(f'ITEM_TO_drop: {item_to_drop}')
+            if item_to_drop.lower() == item.name.lower():
+                player1.items.remove(item)
+                split_items = []
+                return print(f"{item.name.capitalize()} has been removed, {len(player1.items)} left!!")
+        print('You cannot drop that which you do not have.')
 
 def print_location(room_desc, room_name):
-    print(textwrap.fill(f'\n{player1.name} is currently {player1.current_room}. {room_desc}'))
-    # print(textwrap.fill(f'\n{player} is currently {player_cur_room}. {room_desc}'))
+    print(textwrap.fill(f'\n{player1.name} is currently {player1.current_room}. {room_desc} and has {len(player1.items)} items'))
+    print(room[room_name].items)
     for item in room[room_name].items:
         print(f'\nItem: {item.name.capitalize()}, Item Description: {item.description}\n')
+    get_and_drop(room[room_name].items)
+    get_and_drop(room[room_name].items)
+    # get_items = input('Will you get or drop an item? ')
+    # split_items = get_items.split(' ')
+
+    # if get_items == 'no':
+    #     return print('Carry on')
+
+    # if 'get' or 'take' in split_items:
+    #     item_to_get = split_items[1]
+    #     for item in room[room_name].items:
+    #         # print(f'ITEM.NAME: {item.name}')
+    #         # print(f'ITEM_TO_GET: {item_to_get}')
+    #         if item_to_get.lower() == item.name.lower():
+    #             player1.items.append(item)
+    #             return print(f"{item.name.capitalize()} has been added!!")
+            
+    #     print('You cannot get that which the room does not contain.')
+
+    # if 'drop' in split_items:
+    #     item_to_drop = split_items[1]
+    #     for item in room[room_name].items:
+    #         # print(f'ITEM.NAME: {item.name}')
+    #         # print(f'ITEM_TO_drop: {item_to_drop}')
+    #         if item_to_drop.lower() == item.name.lower():
+    #             player1.items.remove(item)
+    #             return print(f"{item.name.capitalize()} has been removed!!")
+            
+        # print('You cannot get that which the room does not contain.')
+
 
 def print_quit():
     print('\nUntil our stars align again, I bid you farewell traveler')
@@ -143,6 +205,7 @@ while True:
         pass
 
 
+
 while True:
     try:
         if player1.current_room == 'outside' and first_move == 'q':
@@ -157,6 +220,7 @@ while True:
             continue
         if player1.current_room.lower() == 'foyer' and next_move in choices:
             move_foyer(next_move)
+
             continue
         if player1.current_room == 'Grand Overlook' and next_move in choices:
             move_outlook(next_move)
