@@ -1,10 +1,9 @@
-from room import Room, List
+from room import Room
 from player import Player
 from item import Item
 import textwrap
 
 # Declare all the rooms
-
 room = {
     'outside':  Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons"),
@@ -32,7 +31,7 @@ room['overlook'].items =[Item('torch', 'The torch is lit, though the cave seems 
 room['narrow'].items = [Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('NARROW', 'placeholder for when I feel more creative')]
 room['treasure'].items = [Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('TREASURE', 'placeholder for when I feel more creative')]
 
-
+# Establish routes
 room['outside'].n_to = room['foyer']
 room['foyer'].s_to = room['outside']
 room['foyer'].n_to = room['overlook']
@@ -42,32 +41,11 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-# outside_list = List(room['outside'].items, room['outside'].name)
-
-# print(room['outside'].items)
-# print(outside_list)
-
-# for item in room['outside'].items:
-#     print(f'\nItem: {item.name.capitalize()}, Item Description: {item.description}\n')
-
-
-
-#
-# Main
-#
-
-# Make a new player object that is currently in the 'outside' room.
-
+# Instantiate Player class
 player1 = Player('Players_Gonna_Play', 'outside')
 
-# Write a loop that:
-#
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
-#
 def get_and_drop(item_list):
-    split_items= []
+    # split_items= []
     get_items = input('Will you get or drop an item? ')
     split_items = get_items.split(' ')
     print(split_items)
@@ -82,19 +60,18 @@ def get_and_drop(item_list):
             print(f'ITEM_TO_GET: {item_to_get.lower()}')
             if item_to_get.lower() == item.name.lower():
                 player1.items.append(item)
+                item_list.remove(item)
                 split_items = []
-                return print(f"{item.name.capitalize()} has been added {len(player1.items)} total!!")
+                return print(f"{item.name.capitalize()} has been added,  {len(player1.items)} total for {player1.name} and {len(item_list)} left in {player1.current_room}!!")
             
         print('You cannot get that which the room does not contain.')
 
     elif 'drop' in split_items:
-        print('DROPPING')
         item_to_drop = split_items[1]
         for item in player1.items:
-            # print(f'ITEM.NAME: {item.name}')
-            # print(f'ITEM_TO_drop: {item_to_drop}')
             if item_to_drop.lower() == item.name.lower():
                 player1.items.remove(item)
+                item_list.append(item)
                 split_items = []
                 return print(f"{item.name.capitalize()} has been removed, {len(player1.items)} left!!")
         print('You cannot drop that which you do not have.')
@@ -105,35 +82,6 @@ def print_location(room_desc, room_name):
     for item in room[room_name].items:
         print(f'\nItem: {item.name.capitalize()}, Item Description: {item.description}\n')
     get_and_drop(room[room_name].items)
-    get_and_drop(room[room_name].items)
-    # get_items = input('Will you get or drop an item? ')
-    # split_items = get_items.split(' ')
-
-    # if get_items == 'no':
-    #     return print('Carry on')
-
-    # if 'get' or 'take' in split_items:
-    #     item_to_get = split_items[1]
-    #     for item in room[room_name].items:
-    #         # print(f'ITEM.NAME: {item.name}')
-    #         # print(f'ITEM_TO_GET: {item_to_get}')
-    #         if item_to_get.lower() == item.name.lower():
-    #             player1.items.append(item)
-    #             return print(f"{item.name.capitalize()} has been added!!")
-            
-    #     print('You cannot get that which the room does not contain.')
-
-    # if 'drop' in split_items:
-    #     item_to_drop = split_items[1]
-    #     for item in room[room_name].items:
-    #         # print(f'ITEM.NAME: {item.name}')
-    #         # print(f'ITEM_TO_drop: {item_to_drop}')
-    #         if item_to_drop.lower() == item.name.lower():
-    #             player1.items.remove(item)
-    #             return print(f"{item.name.capitalize()} has been removed!!")
-            
-        # print('You cannot get that which the room does not contain.')
-
 
 def print_quit():
     print('\nUntil our stars align again, I bid you farewell traveler')
@@ -203,8 +151,6 @@ while True:
             continue
     except:
         pass
-
-
 
 while True:
     try:
