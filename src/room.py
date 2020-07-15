@@ -15,10 +15,8 @@ class Room():
                 return print(f'You have picked up {item.name.capitalize()}')
 
     def on_drop(self, item_drop):
-        for item in self.items:
-            if item_drop.name.lower() == item.name.lower():
-                self.items.append(item_drop)
-                return print(f'You have dropped {item.name.capitalize()}')
+        self.items.append(item_drop)
+        return print(f'You have dropped {item_drop.name.capitalize()}')
 
         
 
