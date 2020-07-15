@@ -45,9 +45,9 @@ room['treasure'].s_to = room['narrow']
 player1 = Player('Players_Gonna_Play', 'outside')
 
 def get_and_drop(room_name):
+    print("I'M IN GET_AND_DROP")
     get_items = input('Will you get or drop an item? ')
     split_items = get_items.split(' ')
-    print(split_items)
 
     if get_items == 'no':
         return print('Carry on')
@@ -84,15 +84,17 @@ def print_quit():
 def print_invalid_direction():
     print('\nTherein lies that which you have not prepared for, please choose a different direction.')
 
+def print_player_inventory():
+    if len(player1.items) < 1:
+        print('Inventory Empty')
+    else:
+
+        print_player_inventory()
+
 def move_foyer(move):
-    if move == 'i':
-        if len(player1.items) < 1:
-            print('Inventory Empty')
-        else:
-            print(f'{player1.name} currently has: ')
-            for item in player1.items:
-                print(item.name)
-        get_and_drop(room['foyer'])
+    # if move == 'i':
+    #     print_player_inventory()
+    #     get_and_drop(room['foyer'])
     if move == 's':
         foyer_move_s = room["foyer"].s_to
         player1.current_room = foyer_move_s.name
@@ -108,12 +110,10 @@ def move_foyer(move):
     elif move == 'w':
         print_invalid_direction()
 
-def move_outlook(move):
-    if move == 'i':
-        print(f'{player1.name} currently has: ')
-        for item in player1.items:
-            print(item.name)
-        get_and_drop(room['overlook'])
+def move_overlook(move):
+    # if move == 'i':
+    #     print_player_inventory()
+    #     get_and_drop(room["overlook"])
     if move == 's':
         overlook_move_s = room["overlook"].s_to
         player1.current_room = overlook_move_s.name
@@ -122,11 +122,9 @@ def move_outlook(move):
         print_invalid_direction()
 
 def move_narrow(move):
-    if move == 'i':
-        print(f'{player1.name} currently has: ')
-        for item in player1.items:
-            print(item.name)
-        get_and_drop(room['narrow'])
+    # if move == 'i':
+    #     print_player_inventory()
+    #     get_and_drop(room['narrow'])
     if move == 'w':
         narrow_move_w = room["narrow"].w_to
         player1.current_room = narrow_move_w.name
@@ -139,12 +137,10 @@ def move_narrow(move):
         print_invalid_direction()
 
 def move_treasure(move):
-    if move == 'i':
-        print(f'{player1.name} currently has: ')
-        for item in player1.items:
-            print(item.name)
-        get_and_drop(room['treasure'])
-    if next_move == 's':
+    # if move == 'i':
+    #     print_player_inventory()
+    #     get_and_drop(room['treasure'])
+    if move == 's':
         treasure_move_s = room["treasure"].s_to
         player1.current_room = treasure_move_s.name
         print_location(treasure_move_s.description, "narrow")
@@ -152,14 +148,12 @@ def move_treasure(move):
         print_invalid_direction()
 
 def move_outside(move):
-    if move == 'i':
-        print(f'{player1.name} currently has: ')
-        for item in player1.items:
-            print(item.name)
-        get_and_drop(room['outside'])
+    # if move == 'i':
+    #     print_player_inventory()
+    #     get_and_drop(room['outside'])
     if move == 'n':
         print('\nSo you choose Adventure.')
-        new_room = room[player1.current_room].n_to
+        new_room = room['outside'].n_to
         player1.current_room = new_room.name
         print_location(new_room.description, "foyer")
     elif move == 'q':
@@ -167,54 +161,49 @@ def move_outside(move):
     else:
         print('\nYou must not deny destiny, the only path forward is North. Accept faith by choosing n for North')
 
+print_location(room['outside'].description, "outside")
 while True:
     try:
-        print_location(room[player1.current_room].description, "outside")
-        first_move = input('\n~~~~> Will you go north, traveler? (Enter n to accept adventure) ')
-        if first_move == 'i':
-            get_and_drop(room['outside'])
-            continue
-        if first_move == 'n':
-           print('\nSo you choose Adventure.')
-           new_room = room[player1.current_room].n_to
-           player1.current_room = new_room.name
-           print_location(new_room.description, "foyer")
-           break
-        elif first_move == 'q':
-            print_quit()
-            break
-        else:
-            print('\nYou must not deny destiny, the only path forward is North. Accept faith by choosing n for North')
-            continue
-    except:
-        pass
-
-while True:
-    try:
-        # if player1.current_room == 'outside' and first_move == 'q':
-        #     break
-        # print_location(room[player1.current_room].description, "outside")
-        choices = ['n', 's', 'e', 'w', 'i']
-        next_move = input('\n~~~~> Will you explore or keep moving, traveler?\n~~~~> (Type explore to search for items or enter a direction to keep moving.) ')
+        
+        choices = ['n', 's', 'e', 'w']
+        next_move = input('\n~~~~> Will you explore or keep moving, traveler? ')
+        print(f"NEXT_MOVE FROM THE TOP OF THE WHILE: {next_move}")
+        # if player1.current_room == 'Foyer' and next_move == 'i':
+        #     print('FOYER INVENTORY')
+        #     print_player_inventory()
+        #     get_and_drop(room['foyer'])
+        #     continue
+        # if player1.current_room == 'Grand Overlook' and next_move == 'i':
+        #     print('OVERLOOK INVENTORY')
+        #     print_player_inventory()
+        #     get_and_drop(room['overlook'])
+        #     continue
+        # if player1.current_room == 'Narrow Passage' and next_move == 'i':
+        #     print('NARROW INVENTORY')
+        #     print_player_inventory()
+        #     get_and_drop(room['narrow'])
+        #     continue
+        # if player1.current_room == 'Treasure Chamber' and next_move == 'i':
+        #     print('TREASURE INVENTORY')
+        #     print_player_inventory()
+        #     get_and_drop(room['treasure'])
+            # continue
         if next_move == 'q':
             print_quit()
-            break
-
-        # if player1.current_room.lower() == 'outside' and next_move in choices:
-        #     move_outside(next_move)
-
-        #     continue        
-        if player1.current_room.lower() == 'foyer' and next_move in choices:
+            break 
+        if player1.current_room == 'Outside Cave Entrance' or player1.current_room == 'outside' and next_move in choices:
+            move_outside(next_move)
+            continue
+        if player1.current_room == 'Foyer' and next_move in choices:
             move_foyer(next_move)
-
             continue
         if player1.current_room == 'Grand Overlook' and next_move in choices:
-            move_outlook(next_move)
+            move_overlook(next_move)
             continue
-        if player1.current_room == 'Narrow Passage'  and next_move in choices:
+        if player1.current_room == 'Narrow Passage' and next_move in choices:
             move_narrow(next_move)
             continue
-        if player1.current_room == 'Treasure Chamber'  and next_move in choices:
+        if player1.current_room == 'Treasure Chamber' and next_move in choices:
             move_treasure(next_move)
             continue
 
