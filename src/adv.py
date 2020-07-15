@@ -1,4 +1,3 @@
-
 from room import Room, List
 from player import Player
 from item import Item
@@ -27,11 +26,11 @@ earlier adventurers. The only exit is to the south."""),
 
 
 # Link rooms together
-room['outside'].items =[ Item('OUTSIDE', 'PROOF THAT THE LIST IS FROM OUTSIDE'), Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('OUTSIDE', 'placeholder for when I feel more creative')]
-room['foyer'].items = [Item('FOYER', 'PROOF THAT THE LIST IS FROM FOYER'), Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('FOYER', 'placeholder for when I feel more creative')]
-room['overlook'].items =[Item('OVERLOOK', 'PROOF THAT THE LIST IS FROM OVERLOOK'), Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('OVERLOOK', 'placeholder for when I feel more creative')]
-room['narrow'].items = [Item('NARROW', 'PROOF THAT THE LIST IS FROM THE NARROW PASSAGE'), Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('NARROW', 'placeholder for when I feel more creative')]
-room['treasure'].items = [Item('TREASURE', 'PROOF THAT THE LIST IS FROM THE TREASURE ROOM'), Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('TREASURE', 'placeholder for when I feel more creative')]
+room['outside'].items =[Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('OUTSIDE', 'placeholder for when I feel more creative')]
+room['foyer'].items = [Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('FOYER', 'placeholder for when I feel more creative')]
+room['overlook'].items =[Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('OVERLOOK', 'placeholder for when I feel more creative')]
+room['narrow'].items = [Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('NARROW', 'placeholder for when I feel more creative')]
+room['treasure'].items = [Item('torch', 'The torch is lit, though the cave seems to have been undisturbed for an eternity'), Item('TREASURE', 'placeholder for when I feel more creative')]
 
 
 room['outside'].n_to = room['foyer']
@@ -42,6 +41,20 @@ room['overlook'].s_to = room['foyer']
 room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
+
+# outside_list = List(room['outside'].items, room['outside'].name)
+
+# print(room['outside'].items)
+# print(outside_list)
+
+# for item in room['outside'].items:
+#     print(f'\nItem: {item.name.capitalize()}, Item Description: {item.description}\n')
+
+
+
+#
+# Main
+#
 
 # Make a new player object that is currently in the 'outside' room.
 
@@ -55,9 +68,9 @@ player1 = Player('Players_Gonna_Play', 'outside')
 #
 
 def print_location(player, player_cur_room, room_desc, room_name):
-    print(textwrap.fill(f'{player} is currently {player_cur_room}. {room_desc}'))
+    print(textwrap.fill(f'\n{player} is currently {player_cur_room}. {room_desc}'))
     for item in room[room_name].items:
-        print(f'Item: {item.name.capitalize()}, Item Description: {item.description}')
+        print(f'\nItem: {item.name.capitalize()}, Item Description: {item.description}\n')
 
 def print_quit():
     print('\nUntil our stars align again, I bid you farewell traveler')
@@ -108,7 +121,6 @@ def move_treasure(move):
         print_location(player1.name,player1.current_room,treasure_move_s.description, "narrow")
     else:
         print_invalid_direction()
-
 
 while True:
     try:
