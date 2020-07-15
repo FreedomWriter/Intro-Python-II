@@ -44,8 +44,7 @@ room['treasure'].s_to = room['narrow']
 # Instantiate Player class
 player1 = Player('Players_Gonna_Play', 'outside')
 
-def get_and_drop(item_list):
-    # split_items= []
+def get_and_drop(room_name):
     get_items = input('Will you get or drop an item? ')
     split_items = get_items.split(' ')
     print(split_items)
@@ -55,14 +54,12 @@ def get_and_drop(item_list):
 
     if split_items[0] == 'get' or split_items[0] == 'take':
         item_to_get = split_items[1]
-        for item in item_list:
-            print(f'ITEM.NAME: {item.name.lower()}')
-            print(f'ITEM_TO_GET: {item_to_get.lower()}')
+        for item in room_name.items:
             if item_to_get.lower() == item.name.lower():
                 player1.items.append(item)
-                item_list.remove(item)
+                room_name.on_take(item)
                 split_items = []
-                return print(f"{item.name.capitalize()} has been added,  {len(player1.items)} total for {player1.name} and {len(item_list)} left in {player1.current_room}!!")
+                return print(f"You have {len(player1.items)} items, {len(room_name.items)} left in {player1.current_room}!!")
             
         print('You cannot get that which the room does not contain.')
 
@@ -71,9 +68,9 @@ def get_and_drop(item_list):
         for item in player1.items:
             if item_to_drop.lower() == item.name.lower():
                 player1.items.remove(item)
-                item_list.append(item)
+                room_name.on_drop(item)
                 split_items = []
-                return print(f"{item.name.capitalize()} has been removed, {len(player1.items)} left!!")
+                return print(f"You have {len(player1.items)} items, {len(room_name.items)} left in {player1.current_room}!!")
         print('You cannot drop that which you do not have.')
 
 def print_location(room_desc, room_name):
@@ -81,7 +78,6 @@ def print_location(room_desc, room_name):
     print(room[room_name].items)
     for item in room[room_name].items:
         print(f'\nItem: {item.name.capitalize()}, Item Description: {item.description}\n')
-    get_and_drop(room[room_name].items)
 
 def print_quit():
     print('\nUntil our stars align again, I bid you farewell traveler')
@@ -90,6 +86,8 @@ def print_invalid_direction():
     print('\nTherein lies that which you have not prepared for, please choose a different direction.')
 
 def move_foyer(move):
+    if move == 'i':
+        get_and_drop(room['foyer'])
     if move == 's':
         foyer_move_s = room["foyer"].s_to
         player1.current_room = foyer_move_s.name
@@ -106,6 +104,8 @@ def move_foyer(move):
         print_invalid_direction()
 
 def move_outlook(move):
+    if move == 'i':
+        get_and_drop(room['overlook'])
     if move == 's':
         overlook_move_s = room["overlook"].s_to
         player1.current_room = overlook_move_s.name
@@ -114,6 +114,8 @@ def move_outlook(move):
         print_invalid_direction()
 
 def move_narrow(move):
+    if move == 'i':
+        get_and_drop(room['narrow'])
     if move == 'w':
         narrow_move_w = room["narrow"].w_to
         player1.current_room = narrow_move_w.name
@@ -126,6 +128,8 @@ def move_narrow(move):
         print_invalid_direction()
 
 def move_treasure(move):
+    if move == 'i':
+        get_and_drop(room['treasure'])
     if next_move == 's':
         treasure_move_s = room["treasure"].s_to
         player1.current_room = treasure_move_s.name
@@ -133,10 +137,26 @@ def move_treasure(move):
     else:
         print_invalid_direction()
 
+def move_outside(move):
+    if move == 'i':
+        get_and_drop(room['outside'])
+    if move == 'n':
+        print('\nSo you choose Adventure.')
+        new_room = room[player1.current_room].n_to
+        player1.current_room = new_room.name
+        print_location(new_room.description, "foyer")
+    elif move == 'q':
+        print_quit()
+    else:
+        print('\nYou must not deny destiny, the only path forward is North. Accept faith by choosing n for North')
+
 while True:
     try:
         print_location(room[player1.current_room].description, "outside")
         first_move = input('\n~~~~> Will you go north, traveler? (Enter n to accept adventure) ')
+        if first_move == 'i':
+            get_and_drop(room['outside'])
+            continue
         if first_move == 'n':
            print('\nSo you choose Adventure.')
            new_room = room[player1.current_room].n_to
@@ -154,16 +174,19 @@ while True:
 
 while True:
     try:
-        if player1.current_room == 'outside' and first_move == 'q':
-            break
-        choices = ['n', 's', 'e', 'w']
+        # if player1.current_room == 'outside' and first_move == 'q':
+        #     break
+        # print_location(room[player1.current_room].description, "outside")
+        choices = ['n', 's', 'e', 'w', 'i']
         next_move = input('\n~~~~> Will you explore or keep moving, traveler?\n~~~~> (Type explore to search for items or enter a direction to keep moving.) ')
         if next_move == 'q':
             print_quit()
             break
-        if next_move == 'explore':
-            print("I'm exploring!!!")
-            continue
+
+        # if player1.current_room.lower() == 'outside' and next_move in choices:
+        #     move_outside(next_move)
+
+        #     continue        
         if player1.current_room.lower() == 'foyer' and next_move in choices:
             move_foyer(next_move)
 
