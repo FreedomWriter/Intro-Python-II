@@ -67,8 +67,9 @@ player1 = Player('Players_Gonna_Play', 'outside')
 # * Waits for user input and decides what to do.
 #
 
-def print_location(player, player_cur_room, room_desc, room_name):
-    print(textwrap.fill(f'\n{player} is currently {player_cur_room}. {room_desc}'))
+def print_location(room_desc, room_name):
+    print(textwrap.fill(f'\n{player1.name} is currently {player1.current_room}. {room_desc}'))
+    # print(textwrap.fill(f'\n{player} is currently {player_cur_room}. {room_desc}'))
     for item in room[room_name].items:
         print(f'\nItem: {item.name.capitalize()}, Item Description: {item.description}\n')
 
@@ -82,15 +83,15 @@ def move_foyer(move):
     if move == 's':
         foyer_move_s = room["foyer"].s_to
         player1.current_room = foyer_move_s.name
-        print_location(player1.name,player1.current_room,foyer_move_s.description, "outside")
+        print_location(foyer_move_s.description, "outside")
     elif move == 'e':
         foyer_move_e = room[player1.current_room.lower()].e_to
         player1.current_room = foyer_move_e.name
-        print_location(player1.name,player1.current_room,foyer_move_e.description, "narrow")
+        print_location(foyer_move_e.description, "narrow")
     elif move == 'n':
         foyer_move_n = room[player1.current_room.lower()].n_to
         player1.current_room = foyer_move_n.name
-        print_location(player1.name,player1.current_room,foyer_move_n.description, "overlook")
+        print_location(foyer_move_n.description, "overlook")
     elif move == 'w':
         print_invalid_direction()
 
@@ -98,7 +99,7 @@ def move_outlook(move):
     if move == 's':
         overlook_move_s = room["overlook"].s_to
         player1.current_room = overlook_move_s.name
-        print_location(player1.name,player1.current_room,overlook_move_s.description,"foyer" )
+        print_location(overlook_move_s.description,"foyer" )
     else:
         print_invalid_direction()
 
@@ -106,11 +107,11 @@ def move_narrow(move):
     if move == 'w':
         narrow_move_w = room["narrow"].w_to
         player1.current_room = narrow_move_w.name
-        print_location(player1.name,player1.current_room,narrow_move_w.description, "foyer")
+        print_location(narrow_move_w.description, "foyer")
     elif move == 'n':
         narrow_move_n = room["narrow"].n_to
         player1.current_room = narrow_move_n.name
-        print_location(player1.name,player1.current_room,narrow_move_n.description, "treasure")
+        print_location(narrow_move_n.description, "treasure")
     else:
         print_invalid_direction()
 
@@ -118,19 +119,19 @@ def move_treasure(move):
     if next_move == 's':
         treasure_move_s = room["treasure"].s_to
         player1.current_room = treasure_move_s.name
-        print_location(player1.name,player1.current_room,treasure_move_s.description, "narrow")
+        print_location(treasure_move_s.description, "narrow")
     else:
         print_invalid_direction()
 
 while True:
     try:
-        print_location(player1.name, player1.current_room, room[player1.current_room].description, "outside")
+        print_location(room[player1.current_room].description, "outside")
         first_move = input('\n~~~~> Will you go north, traveler? (Enter n to accept adventure) ')
         if first_move == 'n':
            print('\nSo you choose Adventure.')
            new_room = room[player1.current_room].n_to
            player1.current_room = new_room.name
-           print_location(player1.name,player1.current_room,new_room.description, "foyer")
+           print_location(new_room.description, "foyer")
            break
         elif first_move == 'q':
             print_quit()
