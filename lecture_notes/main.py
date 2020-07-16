@@ -1,8 +1,9 @@
-
+from product import Product
 class Store:
-  def __init__(self, name, categories):
+  def __init__(self, name, categories, employees):
     self.name= name
     self.categories = categories
+    self.products = products
 
   def __str__(self):
     output = self.name
@@ -16,8 +17,8 @@ class Store:
     return f'{self.name} has {len(self.categories)} categories'
 
 from category import Category
-
-my_store = Store("petapalooza", [Category('food'), Category('costumes'), Category('toys')])
+cats =  [Category('food'), Category('costumes'), Category('toys')]
+my_store = Store("petapalooza",  [Product('toy', 'squeak squirrel'), Product('something', 'some other description'), Product('another', 'another description')]cats, 10)
 print(my_store)
 selection = int(input('Please select a category number '))-1
 while (selection != len(my_store.categories)):
